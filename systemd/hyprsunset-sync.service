@@ -1,0 +1,13 @@
+[Unit]
+Description=Synchronize Hyprsunset with Samsung Eye Comfort Shield
+After=network-online.target graphical-session.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/hyprsunset-sync
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

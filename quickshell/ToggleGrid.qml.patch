@@ -1,0 +1,35 @@
+--- a/panel/ToggleGrid.qml
++++ b/panel/ToggleGrid.qml
+@@ -18,17 +18,14 @@
+         }
+     }
+ 
+-    property bool   nightLightOn:   false
+     property bool   dndOn:          false
+     property bool   airplaneOn:     false
+     property bool   caffeineOn:     false
+     property bool   blurOn:         true
+     property bool   animationsOn:   true
+-    property string nightLightTemp: "3500"
+     property string inhibitPid:     ""
+ 
+-    Process { id: nlOn;  command: ["hyprsunset", "-t", root.nightLightTemp]; running: false }
+-    Process { id: nlOff; command: ["pkill", "hyprsunset"];                   running: false }
++    NightLightSync { id: nightLight }
+     Process {
+         id: dndToggle; command: ["swaync-client", "--toggle-dnd"]; running: false
+         onRunningChanged: if (!running) dndRead.running = true
+@@ -155,11 +152,8 @@
+                 PowerModeExpander { id: pmEx; Layout.fillWidth: true }
+                 Toggle {
+                     Layout.fillWidth: true; implicitHeight: 48
+-                    icon: ""; label: "Night Light"; active: root.nightLightOn
+-                    onClicked: {
+-                        root.nightLightOn = !root.nightLightOn
+-                        if (root.nightLightOn) nlOn.running = true; else nlOff.running = true
+-                    }
++                    icon: ""; label: "Night Light"; active: nightLight.active
++                    onClicked: nightLight.toggle()
+                 }
+             }
+ 
