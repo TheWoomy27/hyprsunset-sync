@@ -193,7 +193,7 @@ same installer. Use the **same** `config.env` on both computers so they read
 the same ntfy topic.
 
 ```bash
-git clone https://github.com/YOUR_ACCOUNT/hyprsunset-sync.git
+git clone https://github.com/TheWoomy27/hyprsunset-sync.git
 cd hyprsunset-sync
 mkdir -p ~/.config/hyprsunset-sync
 # Securely transfer the desktop's config.env to this location.
