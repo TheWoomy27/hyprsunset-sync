@@ -1,2 +1,2 @@
 # Unified-diff context lines intentionally contain a single leading space.
-quickshell/ToggleGrid.qml.patch whitespace=-trailing-space
+quickshell/patches/ToggleGrid.qml.patch whitespace=-trailing-space

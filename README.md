@@ -14,6 +14,10 @@ The phone publishes only `on` or `off` to a long, random [ntfy](https://ntfy.sh)
 topic. The PC maintains an outbound HTTPS subscription. No router changes,
 public PC service, ntfy phone app, or third-party Python packages are needed.
 
+Quickshell is optional. The core listener works on any Hyprland installation
+with systemd, and desktop controls can use the small command-line interface.
+The project is available under the [MIT License](LICENSE).
+
 ## 1. Install the PC listener
 
 Requirements:
@@ -146,7 +150,7 @@ systemctl --user status hyprsunset-sync.service
 journalctl --user -u hyprsunset-sync.service -n 50 --no-pager
 ```
 
-## Quickshell and other desktop controls
+## Desktop controls
 
 The installed command also provides a small control interface:
 
@@ -166,17 +170,21 @@ For Quickshell, poll `hyprsunset-sync --status` and bind the button to
 `hyprsunset-sync --set toggle`. Do not launch or kill `hyprsunset` directly from
 the panel; doing that creates a competing daemon and bypasses synchronization.
 
-This repository includes an integration for the matching Quickshell panel
-configuration:
+The reusable `NightLightSync.qml` controller can be installed without changing
+any existing panel files:
 
 ```bash
-bash install-quickshell.sh
-~/.config/quickshell/scripts/launch.sh
+./install-quickshell.sh
 ```
 
-It replaces the in-memory toggle logic with `NightLightSync.qml`, retains a
-backup named `ToggleGrid.qml.pre-hyprsunset-sync`, and preserves the panel's
-original 3500 K temperature.
+Pass `--component-dir PATH` when your components live somewhere other than the
+Quickshell configuration root. See [the generic Quickshell integration
+guide](docs/quickshell.md) for the binding API and an example button.
+
+The optional `--auto-patch` flag only supports the specific `panel/ToggleGrid.qml`
+layout included in this repository's patch example. It checks for that layout
+and creates `ToggleGrid.qml.pre-hyprsunset-sync` before changing it. Other
+Quickshell configurations remain untouched.
 
 ## Install on another PC
 
@@ -190,7 +198,7 @@ cd hyprsunset-sync
 mkdir -p ~/.config/hyprsunset-sync
 # Securely transfer the desktop's config.env to this location.
 install -m600 /path/from-desktop/config.env ~/.config/hyprsunset-sync/config.env
-./install-quickshell.sh
+./install-quickshell.sh --auto-patch
 ```
 
 If the laptop has not yet been configured, run `./install.sh` once to generate
